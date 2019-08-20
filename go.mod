@@ -1,4 +1,4 @@
-module csv-chef
+module github.com/nicored/csv-chef
 
 go 1.12
 
