@@ -123,7 +123,7 @@ func opToFile(rows *[]Row, defs ValueDefs, args FuncArgs) ([]Row, ValueDefs, err
 var sortOperation = Operation{
 	Name:   "sort",
 	OpFunc: opSort,
-	ArgDef: ArgDef{"cols": reflect.TypeOf([]string{}), "order": reflect.TypeOf("")},
+	ArgDef: ArgDef{"cols": reflect.TypeOf([]string{}), "order": reflect.TypeOf([]string{})},
 }
 
 func opSort(rows *[]Row, defs ValueDefs, args FuncArgs) ([]Row, ValueDefs, error) {
@@ -133,23 +133,26 @@ func opSort(rows *[]Row, defs ValueDefs, args FuncArgs) ([]Row, ValueDefs, error
 	}
 	cols := colsI.([]string)
 
-	order := "asc"
 	orderI, ok := args["order"]
-	if ok {
-		order = orderI.(string)
+	if !ok {
+		return nil, nil, errors.New("order argument not provided")
 	}
+	order := orderI.([]string)
 
-	if order != "asc" && order != "desc" {
-		order = "asc"
+	if len(order) != len(cols) {
+		return nil, nil, errors.New("number of items in 'order' must be equal to number of items in 'cols'")
 	}
-
 	sort.Slice(*rows,
 		func(i, j int) bool {
 			for _, col := range cols {
 				colDef := defs[col]
 
+				if order[i] != "desc" && order[i] != "asc" {
+					order[i] = "asc"
+				}
+
 				if colDef.Type == TypStr {
-					if order == "asc" {
+					if order[i] == "asc" {
 						if (*rows)[i][col].ValStr() < (*rows)[j][col].ValStr() {
 							return true
 						}
@@ -159,7 +162,7 @@ func opSort(rows *[]Row, defs ValueDefs, args FuncArgs) ([]Row, ValueDefs, error
 						}
 					}
 
-					if order == "desc" {
+					if order[i] == "desc" {
 						if (*rows)[i][col].ValStr() > (*rows)[j][col].ValStr() {
 							return true
 						}
@@ -171,7 +174,7 @@ func opSort(rows *[]Row, defs ValueDefs, args FuncArgs) ([]Row, ValueDefs, error
 				}
 
 				if colDef.Type == TypFloat || colDef.Type == TypInt {
-					if order == "asc" {
+					if order[i] == "asc" {
 						if *(*rows)[i][col].ValFloat() < *(*rows)[j][col].ValFloat() {
 							return true
 						}
@@ -181,7 +184,7 @@ func opSort(rows *[]Row, defs ValueDefs, args FuncArgs) ([]Row, ValueDefs, error
 						}
 					}
 
-					if order == "desc" {
+					if order[i] == "desc" {
 						if *(*rows)[i][col].ValFloat() > *(*rows)[j][col].ValFloat() {
 							return true
 						}

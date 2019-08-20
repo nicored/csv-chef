@@ -1,7 +1,7 @@
 package main
 
 import (
-	"csv-chef/csv"
+	"github.com/nicored/csv-chef/csv"
 	"github.com/sirupsen/logrus"
 	"gopkg.in/yaml.v2"
 	"io/ioutil"

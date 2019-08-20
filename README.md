@@ -90,7 +90,7 @@ operations:
     cols:
       values: [ext, code]
     order:
-      value: asc
+      value: [asc, desc]
 
 # counting all duplicated combo of code and extension and the output includes
 # the id, filename, code and extension with an extra dynamic column called 'dupes_count'.
@@ -233,7 +233,7 @@ Operations transforms the all the rows in the CSV to the desired outcome.
       cols:
         values: [ext, id]
       order:
-        value: desc
+        values: [desc, desc]
 ```
 
 ### dupesCount
