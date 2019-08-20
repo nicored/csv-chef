@@ -163,7 +163,7 @@ func fileMd5(args FuncArgs) (string, error) {
 var containsParser = &Parser{
 	name:   "contains",
 	parser: contains,
-	args:   ArgDef{"value": reflect.TypeOf(""), "term": reflect.TypeOf("")},
+	args:   ArgDef{"value": reflect.TypeOf(""), "term": reflect.TypeOf(""), "trueValue": reflect.TypeOf(""), "falseValue": reflect.TypeOf("")},
 }
 
 func contains(args FuncArgs) (string, error) {
