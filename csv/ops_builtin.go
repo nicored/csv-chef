@@ -144,11 +144,11 @@ func opSort(rows *[]Row, defs ValueDefs, args FuncArgs) ([]Row, ValueDefs, error
 	}
 	sort.Slice(*rows,
 		func(i, j int) bool {
-			for _, col := range cols {
+			for colI, col := range cols {
 				colDef := defs[col]
 
-				if order[i] != "desc" && order[i] != "asc" {
-					order[i] = "asc"
+				if order[colI] != "desc" && order[colI] != "asc" {
+					order[colI] = "asc"
 				}
 
 				if colDef.Type == TypStr {
