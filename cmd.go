@@ -32,7 +32,9 @@ func main() {
 		logrus.Fatal(err)
 	}
 
-	d.Do()
+	if err := d.Do(); err != nil {
+		logrus.Error(err)
+	}
 }
 
 func NewData(configFile string, csvFile string) (data *Data, err error) {
