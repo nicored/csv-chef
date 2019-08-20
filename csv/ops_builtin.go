@@ -152,7 +152,7 @@ func opSort(rows *[]Row, defs ValueDefs, args FuncArgs) ([]Row, ValueDefs, error
 				}
 
 				if colDef.Type == TypStr {
-					if order[i] == "asc" {
+					if order[colI] == "asc" {
 						if (*rows)[i][col].ValStr() < (*rows)[j][col].ValStr() {
 							return true
 						}
@@ -162,7 +162,7 @@ func opSort(rows *[]Row, defs ValueDefs, args FuncArgs) ([]Row, ValueDefs, error
 						}
 					}
 
-					if order[i] == "desc" {
+					if order[colI] == "desc" {
 						if (*rows)[i][col].ValStr() > (*rows)[j][col].ValStr() {
 							return true
 						}
@@ -174,7 +174,7 @@ func opSort(rows *[]Row, defs ValueDefs, args FuncArgs) ([]Row, ValueDefs, error
 				}
 
 				if colDef.Type == TypFloat || colDef.Type == TypInt {
-					if order[i] == "asc" {
+					if order[colI] == "asc" {
 						if *(*rows)[i][col].ValFloat() < *(*rows)[j][col].ValFloat() {
 							return true
 						}
@@ -184,7 +184,7 @@ func opSort(rows *[]Row, defs ValueDefs, args FuncArgs) ([]Row, ValueDefs, error
 						}
 					}
 
-					if order[i] == "desc" {
+					if order[colI] == "desc" {
 						if *(*rows)[i][col].ValFloat() > *(*rows)[j][col].ValFloat() {
 							return true
 						}
