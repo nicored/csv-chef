@@ -167,22 +167,32 @@ var containsParser = &Parser{
 }
 
 func contains(args FuncArgs) (string, error) {
-	val, ok := args["value"]
-	if !ok {
-		return "", errors.New("value argument not provided")
+	var err error
+
+	var val string
+	if val, err = argString(args, "value"); err != nil {
+		return "", err
 	}
 
-	term, ok := args["term"]
-	if !ok {
-		return "", errors.New("term argument not provided")
+	var term string
+	if term, err = argString(args, "term"); err != nil {
+		return "", err
 	}
 
-	valStr := val.(string)
-	termStr := term.(string)
-
-	if strings.Contains(valStr, termStr) {
-		return "true", nil
+	var trueVal string
+	if trueVal, err = argString(args, "trueValue"); err != nil {
+		return "", err
 	}
 
-	return "false", nil
+	var falseVal string
+	if falseVal, err = argString(args, "falseValue"); err != nil {
+		return "", err
+	}
+
+
+	if strings.Contains(val, term) {
+		return trueVal, nil
+	}
+
+	return falseVal, nil
 }
